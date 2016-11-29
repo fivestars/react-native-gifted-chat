@@ -63,6 +63,7 @@ class GiftedChat extends React.Component {
     this.onKeyboardDidHide = this.onKeyboardDidHide.bind(this);
     this.onType = this.onType.bind(this);
     this.onSend = this.onSend.bind(this);
+    this.setInputText = this.setInputText.bind(this);
     this.getLocale = this.getLocale.bind(this);
 
     this.invertibleScrollViewProps = {
@@ -374,6 +375,14 @@ class GiftedChat extends React.Component {
     });
   }
 
+  setInputText(value) {
+    this.setState((previousState) => {
+      return {
+        text: value
+      };
+    });
+  }
+
   renderInputToolbar() {
     const inputToolbarProps = {
       ...this.props,
@@ -381,6 +390,7 @@ class GiftedChat extends React.Component {
       composerHeight: Math.max(MIN_COMPOSER_HEIGHT, this.state.composerHeight),
       onChange: this.onType,
       onSend: this.onSend,
+      setInputText: this.setInputText
     };
 
     if (this.props.renderInputToolbar) {
