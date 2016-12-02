@@ -64,6 +64,7 @@ class GiftedChat extends React.Component {
     this.onType = this.onType.bind(this);
     this.onSend = this.onSend.bind(this);
     this.setInputText = this.setInputText.bind(this);
+    this.setInputTextHeight = this.setInputTextHeight.bind(this);
     this.getLocale = this.getLocale.bind(this);
 
     this.invertibleScrollViewProps = {
@@ -383,6 +384,28 @@ class GiftedChat extends React.Component {
     });
   }
 
+  setInputTextHeight(e) {
+    if (this.getIsTypingDisabled() === true) {
+      return;
+    }
+
+    let newComposerHeight = null;
+    if (e.nativeEvent && e.nativeEvent.contentSize) {
+      newComposerHeight = Math.max(MIN_COMPOSER_HEIGHT, Math.min(MAX_COMPOSER_HEIGHT, e.nativeEvent.contentSize.height));
+    } else {
+      newComposerHeight = MIN_COMPOSER_HEIGHT;
+    }
+
+    const newMessagesContainerHeight = this.getMaxHeight() - this.calculateInputToolbarHeight(newComposerHeight) - this.getKeyboardHeight() + this.getBottomOffset();
+
+    this.setState((previousState) => {
+      return {
+        composerHeight: newComposerHeight,
+        messagesContainerHeight: this.prepareMessagesContainerHeight(newMessagesContainerHeight),
+      };
+    });
+  }
+
   renderInputToolbar() {
     const inputToolbarProps = {
       ...this.props,
@@ -390,7 +413,8 @@ class GiftedChat extends React.Component {
       composerHeight: Math.max(MIN_COMPOSER_HEIGHT, this.state.composerHeight),
       onChange: this.onType,
       onSend: this.onSend,
-      setInputText: this.setInputText
+      setInputText: this.setInputText,
+      setInputTextHeight: this.setInputTextHeight
     };
 
     if (this.props.renderInputToolbar) {
