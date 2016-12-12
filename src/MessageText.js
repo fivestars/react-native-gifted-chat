@@ -73,6 +73,7 @@ const textStyle = {
   marginBottom: 5,
   marginLeft: 10,
   marginRight: 10,
+  paddingBottom: 3,
 };
 
 const styles = {
